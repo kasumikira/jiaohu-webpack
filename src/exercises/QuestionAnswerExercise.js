@@ -28,6 +28,6 @@ export default class QuestionAnswerExercise extends Exercise {
                 return
             }
         }
-        fill_textbox(s, content)
+        await fill_textbox(s, content)
     }
 }

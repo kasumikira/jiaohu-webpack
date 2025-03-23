@@ -20,16 +20,27 @@ export default {
     new JavaScriptObfuscator({
       rotateStringArray: true,
       stringArray: true,
-      stringArrayEncoding: ['base64'],
+      stringArrayEncoding: ['rc4', 'base64'],
+      stringArrayThreshold: 1,
       deadCodeInjection: true,
       deadCodeInjectionThreshold: 0.4,
-      unicodeEscapeSequence: false
+      unicodeEscapeSequence: false,
+      debugProtection: true,
+      selfDefending: true,
+      disableConsoleOutput: true,
+      identifierNamesGenerator: 'hexadecimal',
+      renameGlobals: false,
+      transformObjectKeys: true,
+      controlFlowFlattening: true,
+      controlFlowFlatteningThreshold: 0.7,
+      splitStrings: true,
+      splitStringsChunkLength: 5
     }),
     new UserscriptPlugin({
       headers: {
         name: '清华社英语一键填写答案',
         namespace: 'https://qingyexicheng.top/',
-        version: '1.6.1',
+        version: '1.6.2',
         description: '清华社英语一键填写答案',
         author: 'qingyexicheng',
         match: ['https://www.tsinghuaelt.com/course-study-student/*'],
