@@ -1,4 +1,4 @@
-import { JudgeExercise, MultipleChoiceExercise, FillBlankExercise, QuestionAnswerExercise, SingleChoiceExercise, AudioExercise} from './exercises';
+import { ExerciseClasses, AudioExercise } from './exercises';
 import { auto_fill } from './config.js';
 import { sleep } from './utils.js';
 
@@ -37,8 +37,6 @@ function retry() {  // 单击重试按钮
     if (no_answer()) return
     document.querySelector('.wy-course-btn-right .wy-btn').click()
 }
-
-const ExerciseClasses = [JudgeExercise, MultipleChoiceExercise, FillBlankExercise, SingleChoiceExercise, QuestionAnswerExercise, AudioExercise]
 
 async function button_activate() {
     if (is_submit_page()) {

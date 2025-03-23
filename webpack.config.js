@@ -40,7 +40,7 @@ export default {
       headers: {
         name: '清华社英语一键填写答案',
         namespace: 'https://qingyexicheng.top/',
-        version: '1.6.2',
+        version: '1.7.0',
         description: '清华社英语一键填写答案',
         author: 'qingyexicheng',
         match: ['https://www.tsinghuaelt.com/course-study-student/*'],

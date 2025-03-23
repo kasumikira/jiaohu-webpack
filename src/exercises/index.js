@@ -1,7 +1,19 @@
-export { default as Exercise } from './Exercise';
-export { default as JudgeExercise } from './JudgeExercise';
-export { default as MultipleChoiceExercise } from './MultipleChoiceExercise';
-export { default as FillBlankExercise } from './FillBlankExercise';
-export { default as SingleChoiceExercise } from './SingleChoiceExercise';
-export { default as QuestionAnswerExercise } from './QuestionAnswerExercise';
-export { default as AudioExercise } from './AudioExercise';
+import JudgeExercise from './JudgeExercise';
+import MultipleChoiceExercise from './MultipleChoiceExercise';
+import FillBlankExercise from './FillBlankExercise';
+import SingleChoiceExercise from './SingleChoiceExercise';
+import QuestionAnswerExercise from './QuestionAnswerExercise';
+import AudioExercise from './AudioExercise';
+import DragExercise from './DragExercise';
+
+export { JudgeExercise, MultipleChoiceExercise, FillBlankExercise, SingleChoiceExercise, QuestionAnswerExercise, AudioExercise, DragExercise };
+
+export const ExerciseClasses = [
+    JudgeExercise,
+    MultipleChoiceExercise,
+    FillBlankExercise,
+    SingleChoiceExercise,
+    QuestionAnswerExercise,
+    AudioExercise,
+    DragExercise,
+];
