@@ -44,6 +44,6 @@ export default class FillBlankExercise extends Exercise {
                 return
             }
         }
-        fill_textbox(s, content)
+        await fill_textbox(s, content)
     }
 }
