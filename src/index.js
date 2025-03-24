@@ -1,32 +1,18 @@
-import { ExerciseClasses, AudioExercise } from './exercises';
+import { ExerciseClasses } from './exercises';
 import { auto_fill } from './config.js';
 import { sleep } from './utils.js';
 
-function no_answer() {  // 判断页面是否有答案
-    let elems2 = document.querySelectorAll("lib-adap-group-exercise-cs-stu-info,lib-adap-group-exercise-cs-study")
-    if (elems2.length === 0) {
-        elems2 = document.querySelectorAll('lib-adap-exercise-cs-study,lib-adap-exercise-cs-stu-info')
+function answer_is_correct() {  // 判断答案是否正确
+    const marks = document.querySelectorAll('.lib-fill-blank-rightOrWrong')
+    if (Array.from(marks).some(mark => mark.src.includes('wrong'))) {
+        return false
+    } else {
+        return true
     }
-    for (const elem of elems2) {
-        let t = true
-        for (let i = 0; i < ExerciseClasses.length; i++) {
-            if (ExerciseClasses[i].is_this_exercise(elem)) {
-                if (ExerciseClasses[i] !== AudioExercise) {
-                    return false
-                }
-                t = false
-                break
-            }
-        }
-        if (t) {
-            return false
-        }
-    }
-    return true
 }
 
 function is_submit_page() {
-    return !((document.querySelector("#wyy-submit") === null) || no_answer())  // 判断是否是提交页面。如果没有答案，或者没有提交按钮，则不是提交页面
+    return document.querySelector("#wyy-submit") !== null  // 判断是否是提交页面。如果有提交按钮，则是提交页面
 }
 
 function submit() {
@@ -34,7 +20,7 @@ function submit() {
 }
 
 function retry() {  // 单击重试按钮
-    if (no_answer()) return
+    if (answer_is_correct()) return
     document.querySelector('.wy-course-btn-right .wy-btn').click()
 }
 
@@ -70,6 +56,8 @@ async function button_activate() {
         const new_uri = window.location.href
         if (old_uri !== new_uri) return
     }
+
+    if (answer_is_correct()) return
 
     //获取答案
     let elems = document.querySelectorAll("lib-adap-group-exercise-cs-stu-info,lib-adap-group-exercise-cs-study")
