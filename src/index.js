@@ -121,12 +121,32 @@ function add_button() {
 }
 
 (function() {
-    if (document.querySelector('.hacked') === null) {
-        add_button()
-    }
-    setInterval(() => {
-        if (document.querySelector('.hacked') === null) {
-            add_button()
+    let adding = false
+
+    const observer = new MutationObserver((mutations) => {
+        console.log('mutation')
+        if (adding) return
+        if (Array.from(mutations).every(mutation => {
+            if (mutation.addedNodes.length === 0) {
+                return true
+            }
+            return Array.from(mutation.addedNodes).every(node => {
+                if (node.nodeType !== Node.ELEMENT_NODE) return true
+                // if (node.classList?.contains('wy-course-btn-left') || node.querySelector('.wy-course-btn-left') !== null) console.log(node.tagName?.toLowerCase().includes('app-course'))
+                return !node.tagName?.toLowerCase().includes('app-course')
+            })
+        })) return
+        if (!adding && document.querySelector('.wy-course-btn-left') !== null && document.querySelector('.hacked') === null) {
+            adding = true
+            setTimeout(() => {
+                add_button()
+                adding = false
+            }, 300)
         }
-    }, 2000)
+    })
+
+    const targetNode = document.body
+    const config = { childList: true, subtree: true };
+
+    observer.observe(targetNode, config)
 })();
