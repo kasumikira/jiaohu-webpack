@@ -75,7 +75,6 @@ function mouseEvent(div, type, pos) {
     const mouseEvent = new MouseEvent(type, {
         bubbles: true,
         cancelable: true,
-        view: window,
         detail: 0,
         screenX: x,
         screenY: y,
