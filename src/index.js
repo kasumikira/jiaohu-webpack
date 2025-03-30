@@ -1,6 +1,7 @@
 import { ExerciseClasses } from './exercises';
 import { auto_fill } from './config.js';
 import { sleep } from './utils.js';
+import { initMicHook } from './hook/hook.js';
 
 function answer_is_correct() {  // 判断答案是否正确
     const marks = document.querySelectorAll('.lib-fill-blank-rightOrWrong')
@@ -121,6 +122,7 @@ function add_button() {
 }
 
 (function() {
+    initMicHook()
     let adding = false
 
     const observer = new MutationObserver((mutations) => {

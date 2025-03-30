@@ -47,7 +47,8 @@ export default {
         icon: 'https://file.qingyexicheng.top/tsinghuaelt-script/faviconV2.png',
         updateURL: 'https://file.qingyexicheng.top/tsinghuaelt-script/script.user.js',
         downloadURL: 'https://file.qingyexicheng.top/tsinghuaelt-script/script.user.js',
-        grant: ['none']
+        grant: ['unsafeWindow'],
+        'run-at': 'document-start',
       }
     })
   ],
