@@ -1,5 +1,4 @@
 import Exercise from './Exercise'
-import { sleep } from './utils'
 
 export default class MultipleChoiceExercise extends Exercise {
     static box_identifier = ".lib-single-box"

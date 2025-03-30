@@ -1,5 +1,4 @@
 import Exercise from './Exercise'
-import { sleep } from './utils'
 
 export default class JudgeExercise extends Exercise {
     static box_identifier = ".lib-judge-right-item"
