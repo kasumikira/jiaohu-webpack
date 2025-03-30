@@ -1,4 +1,4 @@
-import { async_input, WAIT_AFTER_FILL } from '../config.js'
+import { WAIT_AFTER_FILL } from '../config.js'
 import { sleep } from '../utils.js'
 
 export default class Exercise {
@@ -21,9 +21,9 @@ export default class Exercise {
         const boxes = element.querySelectorAll(this.box_identifier);
             
         // 处理每个元素
-        if (async_input) {
+        if (window.async_input) {
             // 异步输入模式 - 并行启动所有操作
-            const waits = Array.from(boxes).map(box => box.fill_box(box))
+            const waits = Array.from(boxes).map(box => this.fill_box(box))
 
             // 等待所有填充操作完成            
             if ((await Promise.all(waits)).some(bool => bool === false)) {
@@ -48,7 +48,7 @@ export default class Exercise {
         let waits = []
         for (const s of this.element.querySelectorAll(this.constructor.box_identifier)) {
             let res
-            if (async_input) {
+            if (window.async_input) {
                 res = this.constructor.fill_box(s, this.answer_string[id++])
                 waits.push(res)
             }
@@ -62,7 +62,7 @@ export default class Exercise {
             }
 
         }
-        if (async_input) {
+        if (window.async_input) {
             if ((await Promise.all(waits)).some(bool => !bool)) {
                 // alert('不支持的题型')
                 return false

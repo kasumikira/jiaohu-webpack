@@ -1,14 +1,17 @@
 import { sleep, isLetter, isDigit } from '../utils'
 import OpenAI from 'openai'
-import { DEEPSEEK_KEY } from '../config';
 
 export * from '../utils'
 
-const deepseek = new OpenAI({
-    baseURL: 'https://api.deepseek.com',
-    apiKey: DEEPSEEK_KEY,
-    dangerouslyAllowBrowser: true,
-});
+let deepseek;
+
+export function initDeepSeek(deepseekKey) {
+    deepseek = new OpenAI({
+        baseURL: 'https://api.deepseek.com',
+        apiKey: deepseekKey,
+        dangerouslyAllowBrowser: true,
+    });
+}
 
 export async function fill_textbox(s, content) {
     s.click()

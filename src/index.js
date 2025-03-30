@@ -1,7 +1,8 @@
 import { ExerciseClasses, WritingExercise } from './exercises';
-import { auto_fill } from './config.js';
 import { sleep } from './utils.js';
 import { initMicHook } from './hook/hook.js';
+import { createApp } from 'vue';
+import ConfigPanel from './components/ConfigPanel.vue';
 
 async function answer_is_correct() {  // 判断答案是否正确
     const marks = document.querySelectorAll('img')
@@ -26,6 +27,7 @@ async function retry() {  // 单击重试按钮
 }
 
 async function button_activate() {
+    console.log(window.auto_fill)
     if (await is_submit_page()) {
         let skip_writing = true
         const writingBlocks = []
@@ -58,7 +60,7 @@ async function button_activate() {
             await submit()
             return
         }
-        if (!auto_fill) {
+        if (!window.auto_fill) {
             return
         }
         const old_uri = window.location.href
@@ -180,6 +182,11 @@ async function add_button() {
     } else {
         document.addEventListener('DOMContentLoaded', () => {
             observer.observe(document.body, config);
+            // 初始化配置面板
+            const configApp = createApp(ConfigPanel);
+            const configContainer = document.createElement('div');
+            document.body.appendChild(configContainer);
+            configApp.mount(configContainer);
         });
     }
 })();

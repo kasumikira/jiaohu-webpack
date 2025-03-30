@@ -1,8 +1,9 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { UserscriptPlugin } from 'webpack-userscript';
-import JavaScriptObfuscator from 'webpack-obfuscator';
+// import JavaScriptObfuscator from 'webpack-obfuscator';
 import ESLintWebpackPlugin from 'eslint-webpack-plugin';
+import { VueLoaderPlugin } from 'vue-loader';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,7 +14,23 @@ export default {
     path: path.resolve(__dirname, 'dist'),
     filename: 'jiaohu.js'
   },
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  },
   plugins: [
+    new VueLoaderPlugin(),
     new ESLintWebpackPlugin({
       context: path.resolve(__dirname,'src')
     }),
@@ -40,7 +57,7 @@ export default {
       headers: {
         name: '清华社英语一键填写答案',
         namespace: 'https://qingyexicheng.top/',
-        version: '1.9.1',
+        version: '1.9.2',
         description: '清华社英语一键填写答案',
         author: 'qingyexicheng',
         match: ['https://www.tsinghuaelt.com/course-study-student/*'],

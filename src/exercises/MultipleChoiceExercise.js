@@ -1,4 +1,6 @@
+import { WAIT_AFTER_FILL } from '../config'
 import Exercise from './Exercise'
+import { sleep } from '../utils'
 
 export default class MultipleChoiceExercise extends Exercise {
     static box_identifier = ".lib-single-box"
@@ -34,6 +36,9 @@ export default class MultipleChoiceExercise extends Exercise {
                         item.click()
                         break
                     }
+                }
+                if (!window.async_input) {
+                    await sleep(WAIT_AFTER_FILL) // 模拟同步输入时的卡顿
                 }
             }
         }
