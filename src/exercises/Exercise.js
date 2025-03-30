@@ -1,4 +1,5 @@
-import { async_input } from '../config.js'
+import { async_input, WAIT_AFTER_FILL } from '../config.js'
+import { sleep } from '../utils.js'
 
 export default class Exercise {
     constructor(element) {
@@ -36,6 +37,7 @@ export default class Exercise {
                     // 如果填充操作失败，立即退出
                     return false;
                 }
+                await sleep(WAIT_AFTER_FILL)
             }
         }
         return true
@@ -56,6 +58,7 @@ export default class Exercise {
                     // alert('不支持的题型')
                     return false
                 }
+                await sleep(WAIT_AFTER_FILL)
             }
 
         }

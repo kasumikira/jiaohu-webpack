@@ -1,3 +1,4 @@
+import { WAIT_AFTER_FILL } from '../config'
 import Exercise from './Exercise'
 import { sleep, dragTo } from './utils'
 
@@ -48,7 +49,7 @@ export default class DragExercise extends Exercise {
                         return false
                     } else {
                         await dragTo(options[cnt++], boxes[i])
-                        await sleep(120)
+                        await sleep(WAIT_AFTER_FILL)
                     }
                 }
             }
@@ -64,7 +65,6 @@ export default class DragExercise extends Exercise {
             const option_text = option.querySelector('span').textContent
             if (option_text.startsWith(content)) {
                 await dragTo(option, s)
-                await sleep(120)
                 return true
             }
         }

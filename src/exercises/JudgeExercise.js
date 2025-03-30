@@ -39,7 +39,6 @@ export default class JudgeExercise extends Exercise {
                 return false
             }
         }
-        await sleep(120)
     }
 
 }

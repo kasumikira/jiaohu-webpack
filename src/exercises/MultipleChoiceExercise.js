@@ -33,7 +33,6 @@ export default class MultipleChoiceExercise extends Exercise {
                     const id = item.querySelector(".lib-single-item-order").textContent;
                     if (id === conten + '.') {
                         item.click()
-                        await sleep(120)
                         break
                     }
                 }
