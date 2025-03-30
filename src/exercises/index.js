@@ -5,8 +5,9 @@ import SingleChoiceExercise from './SingleChoiceExercise';
 import QuestionAnswerExercise from './QuestionAnswerExercise';
 import AudioExercise from './AudioExercise';
 import DragExercise from './DragExercise';
+import WritingExercise from './WritingExercise';
 
-export { JudgeExercise, MultipleChoiceExercise, FillBlankExercise, SingleChoiceExercise, QuestionAnswerExercise, AudioExercise, DragExercise };
+export { JudgeExercise, MultipleChoiceExercise, FillBlankExercise, SingleChoiceExercise, QuestionAnswerExercise, AudioExercise, DragExercise, WritingExercise };
 
 export const ExerciseClasses = [
     JudgeExercise,
@@ -16,4 +17,5 @@ export const ExerciseClasses = [
     QuestionAnswerExercise,
     AudioExercise,
     DragExercise,
+    WritingExercise,
 ];

@@ -1,6 +1,14 @@
 import { sleep, isLetter, isDigit } from '../utils'
+import OpenAI from 'openai'
+import { DEEPSEEK_KEY } from '../config';
 
 export * from '../utils'
+
+const deepseek = new OpenAI({
+    baseURL: 'https://api.deepseek.com',
+    apiKey: DEEPSEEK_KEY,
+    dangerouslyAllowBrowser: true,
+});
 
 export async function fill_textbox(s, content) {
     s.click()
@@ -104,4 +112,16 @@ export async function dragTo(from, to) {
     const offset = to.offsetTop + to.clientHeight - dragBlock.offsetTop;
     dragBlock.scrollTop = offset;
     await sleep(200);
+}
+
+export async function creativeAnswerGenerator(question) {
+    const completion = await deepseek.chat.completions.create({
+        messages: [
+            { role: 'system', content: `You are a student taking an English exam. You're now given a question. Answer it in brief words. Your teacher hates markdown, and she don't want to see anything like "Here is my answer".` },
+            { role: 'user', content: question }
+        ],
+        model: "deepseek-chat",
+        stream: true,
+    });
+    return completion
 }

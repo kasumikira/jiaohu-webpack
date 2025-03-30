@@ -4,7 +4,7 @@ export default class Exercise {
     constructor(element) {
         this.element = element
         this.answer_string = null
-        this.box_identifier = null
+        this.box_identifier = null //填充区域的标识符
     }
 
     async is_this_exercise() {

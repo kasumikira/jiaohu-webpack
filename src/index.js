@@ -1,10 +1,10 @@
-import { ExerciseClasses } from './exercises';
+import { ExerciseClasses, WritingExercise } from './exercises';
 import { auto_fill } from './config.js';
 import { sleep } from './utils.js';
 import { initMicHook } from './hook/hook.js';
 
 async function answer_is_correct() {  // 判断答案是否正确
-    const marks = document.querySelectorAll('.lib-fill-blank-rightOrWrong')
+    const marks = document.querySelectorAll('img')
     if (Array.from(marks).some(mark => mark.src.includes('wrong'))) {
         return false
     } else {
@@ -27,6 +27,8 @@ async function retry() {  // 单击重试按钮
 
 async function button_activate() {
     if (await is_submit_page()) {
+        let skip_writing = true
+        const writingBlocks = []
         let elems2 = document.querySelectorAll("lib-adap-group-exercise-cs-study")
         if (elems2.length === 0) {
             elems2 = document.querySelectorAll('lib-adap-exercise-cs-study')
@@ -36,11 +38,25 @@ async function button_activate() {
             const results = await Promise.all(promises)
             if (results.some(Boolean)) {
                 const id = results.findIndex(Boolean)
-                await ExerciseClasses[id].fill_default(elem)
+                if (ExerciseClasses[id] === WritingExercise) {
+                    writingBlocks.push(elem)
+                    continue
+                } else {
+                    skip_writing = false
+                    await ExerciseClasses[id].fill_default(elem)
+                }
             } else {
                 alert('不支持的题型！')
                 return
             }
+        }
+        if (skip_writing && writingBlocks.length > 0) {
+            for (const block of writingBlocks) {
+                const exercise = new WritingExercise(block)
+                await exercise.fill()
+            }
+            await submit()
+            return
         }
         if (!auto_fill) {
             return
@@ -55,7 +71,11 @@ async function button_activate() {
         if (old_uri !== new_uri) return
     }
 
+    console.log('get answer go')
+
     if (await answer_is_correct()) return
+
+    console.log('get answer go')
 
     //获取答案
     let elems = document.querySelectorAll("lib-adap-group-exercise-cs-stu-info,lib-adap-group-exercise-cs-study")
