@@ -16,7 +16,7 @@ export default class SingleChoiceExercise extends Exercise {
         }
     }
 
-    static is_this_exercise(element) {
+    static async is_this_exercise(element) {
         let nodes = element.querySelectorAll("lib-single-choice-exercise-cs-stu-info,lib-single-choice-exercise-tb-study")
         return nodes.length > 0
     }

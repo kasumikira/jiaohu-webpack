@@ -13,7 +13,7 @@ export default class DragExercise extends Exercise {
         }
     }
 
-    static is_this_exercise(element) {
+    static async is_this_exercise(element) {
         let nodes = element.querySelectorAll('lib-drag-drop-one-exercise-cs-stu-info,lib-drag-drop-one-exercise-cs-study')
         return nodes.length > 0
     }

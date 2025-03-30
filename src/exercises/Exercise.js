@@ -7,7 +7,7 @@ export default class Exercise {
         this.box_identifier = null
     }
 
-    is_this_exercise() {
+    async is_this_exercise() {
         alert("Unknown Error")
     }
 
@@ -16,24 +16,17 @@ export default class Exercise {
     }
 
     static async fill_default(element) { // 填充默认答案
-        let waits = []
         // 获取所有需要填充的元素
         const boxes = element.querySelectorAll(this.box_identifier);
             
         // 处理每个元素
         if (async_input) {
             // 异步输入模式 - 并行启动所有操作
-            for (const box of boxes) {
-                const fillPromise = this.fill_box(box);
-                waits.push(fillPromise);
-            }
-            
-            // 等待所有填充操作完成
-            for (const promise of waits) {
-                if (await promise === false) {
-                    // 如果任何填充操作失败，退出函数
-                    return false;
-                }
+            const waits = Array.from(boxes).map(box => box.fill_box(box))
+
+            // 等待所有填充操作完成            
+            if ((await Promise.all(waits)).some(bool => bool === false)) {
+                return false
             }
         } else {
             // 同步输入模式 - 一个接一个处理
@@ -45,6 +38,7 @@ export default class Exercise {
                 }
             }
         }
+        return true
     }
 
     async fill() { // 将answer_string填充到题目中
@@ -66,11 +60,9 @@ export default class Exercise {
 
         }
         if (async_input) {
-            for (const s of waits) {
-                if (await s === false) {
-                    // alert('不支持的题型')
-                    return false
-                }
+            if ((await Promise.all(waits)).some(bool => !bool)) {
+                // alert('不支持的题型')
+                return false
             }
         }
     }

@@ -15,7 +15,7 @@ export default class QuestionAnswerExercise extends Exercise {
         }
     }
 
-    static is_this_exercise(element) {
+    static async is_this_exercise(element) {
         let nodes = element.querySelectorAll("lib-questions-answers-exercise-cs-study,lib-questions-answers-exercise-cs-stu-info")
         return nodes.length > 0
     }

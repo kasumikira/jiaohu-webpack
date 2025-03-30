@@ -13,7 +13,7 @@ export default class JudgeExercise extends Exercise {
         }
     }
 
-    static is_this_exercise(element) {
+    static async is_this_exercise(element) {
         let nodes = element.querySelectorAll("lib-judge-exercise-cs-stu-info,lib-judge-exercise-cs-study")
         return nodes.length > 0
     }

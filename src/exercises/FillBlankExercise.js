@@ -31,7 +31,7 @@ export default class FillBlankExercise extends Exercise {
         }
     }
 
-    static is_this_exercise(element) {
+    static async is_this_exercise(element) {
         let nodes = element.querySelectorAll("lib-fill-blank-exercise-cs-stu-info,lib-fill-blank-exercise-cs-study,lib-cloze-exercise-cs-study,lib-cloze-exercise-cs-stu-info,lib-fill-blank-dialogue-exercise-cs-stu-info,lib-fill-blank-dialogue-exercise-cs-study")
         return nodes.length > 0
     }

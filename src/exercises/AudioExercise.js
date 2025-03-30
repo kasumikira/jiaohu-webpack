@@ -10,7 +10,7 @@ export default class AudioExercise extends Exercise {
         this.answer_string = []
     }
 
-    static is_this_exercise(element) {
+    static async is_this_exercise(element) {
         let nodes = element.querySelectorAll("lib-oral-brief-exercise-cs-study,lib-oral-brief-exercise-cs-stu-info")
         return nodes.length > 0
     }
