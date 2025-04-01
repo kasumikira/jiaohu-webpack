@@ -20,6 +20,7 @@ export default class DragExercise extends Exercise {
     }
 
     static async fill_default(element) {
+        document.querySelector(".lib-drag-block").scrollTop = 0
         let async_input = false // 异步输入可能会造成问题，暂时禁用
         const options = element.querySelectorAll('.lib-drag-box')
         let cnt = 0
