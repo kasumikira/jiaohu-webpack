@@ -69,5 +69,8 @@ export default {
       }
     })
   ],
-  mode: 'production'
+  mode: 'production',
+  optimization: {
+    minimize: false
+  }
 };
