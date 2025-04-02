@@ -9,7 +9,7 @@ export default class MultipleChoiceExercise extends Exercise {
         super(element)
         this.element = element
         this.answer_string = []
-        for (const s of element.querySelectorAll('.wy-lib-cs-key')) {
+        for (const s of element.querySelectorAll(".wy-lib-cs-key")) {
             const keyBlock = s.parentNode.childNodes;
             let p = keyBlock.length - 1;
             while (keyBlock[p] instanceof Comment) p--;
@@ -26,10 +26,10 @@ export default class MultipleChoiceExercise extends Exercise {
         if (content === null) {
             const isAlreadyAnswered = Array.from(s.querySelectorAll('.lib-single-item-img')).some(img_div => !img_div.querySelector('img').src.includes('no-choice'));
             if (!isAlreadyAnswered) {
-                s.querySelector('.lib-single-item-one').click();
+                s.querySelector(".lib-single-item-one").click();
             }
         } else {
-            for (const item of s.querySelectorAll('.lib-single-item-one')) {
+            for (const item of s.querySelectorAll(".lib-single-item-one")) {
                 for (const conten of content) {
                     const id = item.querySelector(".lib-single-item-order").textContent;
                     if (id === conten + '.') {

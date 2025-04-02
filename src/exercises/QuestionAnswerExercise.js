@@ -7,10 +7,10 @@ export default class QuestionAnswerExercise extends Exercise {
     constructor(element) {
         super(element)
         this.answer_string = []
-        for (const s of element.querySelectorAll('.wy-lib-cs-key')) {
-            const keyBlock = s.parentNode.childNodes;
-            let p = keyBlock.length - 1;
-            while (keyBlock[p] instanceof Comment) p--;
+        for (const s of element.querySelectorAll(".wy-lib-cs-key")) {
+            const keyBlock = s.parentNode.childNodes
+            let p = keyBlock.length - 1
+            while (keyBlock[p] instanceof Comment) p--
             this.answer_string.push(keyBlock[p].textContent)
         }
     }

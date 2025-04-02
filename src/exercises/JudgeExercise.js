@@ -7,8 +7,9 @@ export default class JudgeExercise extends Exercise {
         super(element)
         this.element = element
         this.answer_string = []
-        for (const s of element.querySelectorAll('.lib-judge-info-text')) {
-            this.answer_string.push(s.textContent)
+        const options = Array.from(document.querySelectorAll(".lib-judge-right-item-text")).map((ele) => ele.textContent.trim())
+        for (const s of element.querySelectorAll(".lib-judge-info-text")) {
+            this.answer_string.push(options.indexOf(s.textContent.trim()))
         }
     }
 
@@ -18,25 +19,16 @@ export default class JudgeExercise extends Exercise {
     }
 
     static async fill_box(s, content = null) {
-        const radios = s.querySelectorAll(".lib-judge-radio");
+        const radios = s.querySelectorAll(".lib-judge-radio")
 
         if (content === null) {
             // 检查是否已经有答案
-            const isAlreadyAnswered = Array.from(radios).some(radio => radio.querySelector('img').hidden === false);
+            const isAlreadyAnswered = Array.from(radios).some(radio => radio.querySelector('img').hidden === false)
             if (!isAlreadyAnswered) {
-                radios[0].click();
+                radios[0].click()
             }
         } else {
-            content = content.trim()
-            if (content === 'T' || content === 'A') {
-                radios[0].click()
-            } else if (content === 'F' || content === 'D') {
-                radios[1].click()
-            } else if (content === 'NI') {
-                radios[2].click()
-            } else {
-                return false
-            }
+            radios[content].click()
         }
     }
 

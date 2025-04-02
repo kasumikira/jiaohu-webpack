@@ -66,10 +66,16 @@ export default {
         downloadURL: 'https://file.qingyexicheng.top/tsinghuaelt-script/script.user.js',
         grant: ['unsafeWindow'],
         'run-at': 'document-start',
+        require: [
+          'https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.global.prod.js',
+        ],
       }
     })
   ],
   mode: 'production',
+  externals: {
+    vue: 'Vue',
+  },
   optimization: {
     minimize: false
   }
