@@ -44,6 +44,9 @@ export default class FillBlankExercise extends Exercise {
                 return
             }
         }
-        await fill_textbox(s, content)
+        const answers = content.split('/')
+        const id = Math.floor(answers.length * Math.random())
+        console.log(answers, id)
+        await fill_textbox(s, answers[id])
     }
 }
