@@ -26,6 +26,13 @@ export default {
           'vue-style-loader',
           'css-loader'
         ]
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader'
+        }
       }
     ]
   },
@@ -56,18 +63,14 @@ export default {
     new UserscriptPlugin({
       headers: {
         name: '清华社英语一键填写答案',
-        namespace: 'https://qingyexicheng.top/',
         version: '1.9.2',
         description: '清华社英语一键填写答案',
         author: 'qingyexicheng',
-        match: ['https://www.tsinghuaelt.com/course-study-student/*'],
-        icon: 'https://file.qingyexicheng.top/tsinghuaelt-script/faviconV2.png',
-        updateURL: 'https://file.qingyexicheng.top/tsinghuaelt-script/script.user.js',
-        downloadURL: 'https://file.qingyexicheng.top/tsinghuaelt-script/script.user.js',
+        match: ['https://www.tsinghuaelt.com/*'],
         grant: ['unsafeWindow'],
         'run-at': 'document-start',
         require: [
-          'https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.global.prod.js',
+          'https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/vue/3.2.31/vue.runtime.global.prod.min.js'
         ],
       }
     })
@@ -75,6 +78,7 @@ export default {
   mode: 'production',
   externals: {
     vue: 'Vue',
+
   },
   optimization: {
     minimize: false

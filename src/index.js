@@ -52,7 +52,7 @@ async function button_activate() {
                 return
             }
         }
-        if (skip_writing && writingBlocks.length > 0) {
+        if (skip_writing && writingBlocks.length > 0) { // 如果只有写作题那就直接提交答案
             for (const block of writingBlocks) {
                 const exercise = new WritingExercise(block)
                 await exercise.fill()
@@ -153,7 +153,10 @@ async function add_button() {
 
     const observer = new MutationObserver(mutations => {
         console.log('mutation')
+        const URLPattern = /[http|https]:\/\/www.tsinghuaelt.com\/course-study-student\/[0-9]+\/[0-9]+\/[0-9]+\/[0-9a-z]+/
+
         if (adding) return
+        if (!URLPattern.test(window.location.href)) return // 跳过所有非答题页
         if (Array.from(mutations).every(mutation => {
             if (mutation.addedNodes.length === 0) {
                 return true

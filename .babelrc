@@ -1,0 +1,18 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [
+            ">5% in CN, last 2 versions"
+          ]
+        },
+        "modules": false,
+        "useBuiltIns": "usage",
+        "corejs": "3"
+      }
+    ]
+  ],
+  "plugins": ["transform-remove-console"]
+}
