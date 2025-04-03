@@ -64,8 +64,10 @@ export default {
       headers: {
         name: '清华社英语一键填写答案',
         version: '1.9.2',
-        description: '清华社英语一键填写答案',
+        description: '利用清华社英语提供的答案，进行一键填写。',
+        license: 'GPL-3.0-only',
         author: 'qingyexicheng',
+        namespace: 'https://qingyexicheng.top',
         match: ['https://www.tsinghuaelt.com/*'],
         grant: ['unsafeWindow'],
         'run-at': 'document-start',
