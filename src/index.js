@@ -148,7 +148,14 @@ async function add_button() {
 }
 
 (function() {
-    initMicHook()
+    // const isSafari = /apple/i.test(navigator.userAgent) &&
+    //          !navigator.userAgent.match(/crios/i) &&
+    //          !navigator.userAgent.match(/fxios/i) &&
+    //          !navigator.userAgent.match(/Opera|OPT\//);
+
+    // if (!isSafari) {
+    //     initMicHook()
+    // }
     let adding = false
 
     const observer = new MutationObserver(mutations => {
