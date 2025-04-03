@@ -63,7 +63,7 @@ export default {
     new UserscriptPlugin({
       headers: {
         name: '清华社英语一键填写答案',
-        version: '1.9.2',
+        version: '1.9.3',
         description: '利用清华社英语提供的答案，进行一键填写。',
         license: 'GPL-3.0-only',
         author: 'qingyexicheng',
