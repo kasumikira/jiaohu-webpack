@@ -9,15 +9,19 @@ export default class WritingExercise extends Exercise {
         this.answer_string = []
         
         // 获取写作题目内容
-        const directiveContents = element.querySelectorAll(".exercise-directiveContent")
-        for (const content of directiveContents) {
-            const spans = content.querySelectorAll('span')
-            const questionText = Array.from(spans)
-                .map(span => span.textContent.trim())
-                .join('\n')
-            if (questionText) {
-                this.answer_string.push(questionText)
+        const spans = element.querySelectorAll("span[data-type='1']")
+        let questionText = Array.from(spans)
+            .map(span => span.textContent.trim())
+            .join('\n')
+        if (questionText) {
+            const words = element.querySelectorAll(".lib-select-word-list-content-item-main")
+            if (words?.length > 0) {
+                questionText += '\nWords:'
+                questionText += Array.from(words)
+                    .map(word => word.textContent.trim())
+                    .join(' ')
             }
+            this.answer_string.push(questionText)
         }
     }
 
