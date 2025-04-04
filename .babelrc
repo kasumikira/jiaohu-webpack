@@ -9,8 +9,7 @@
           ]
         },
         "modules": false,
-        "useBuiltIns": "usage",
-        "corejs": "3"
+        "useBuiltIns": false
       }
     ]
   ],
