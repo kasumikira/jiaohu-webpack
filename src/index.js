@@ -1,6 +1,6 @@
 import { ExerciseClasses, WritingExercise } from './exercises';
 import { sleep } from './utils.js';
-import { initMicHook } from './hook/hook.js';
+// import { initMicHook } from './hook/hook.js';
 import { createApp } from 'vue';
 import ConfigPanel from './components/ConfigPanel.vue';
 
@@ -22,64 +22,53 @@ async function submit() {
 }
 
 async function retry() {  // 单击重试按钮
-    if (await answer_is_correct()) return
     document.querySelector('.wy-course-btn-right .wy-btn').click()
 }
 
-async function button_activate() {
-    console.log(window.auto_fill)
-    if (await is_submit_page()) {
-        let skip_writing = true
-        const writingBlocks = []
-        let elems2 = document.querySelectorAll("lib-adap-group-exercise-cs-study")
-        if (elems2.length === 0) {
-            elems2 = document.querySelectorAll('lib-adap-exercise-cs-study')
-        }
-        for (const elem of elems2) {
-            const promises = ExerciseClasses.map(exercise => exercise.is_this_exercise(elem))
-            const results = await Promise.all(promises)
-            if (results.some(Boolean)) {
-                const id = results.findIndex(Boolean)
-                if (ExerciseClasses[id] === WritingExercise) {
-                    writingBlocks.push(elem)
-                    continue
-                } else {
-                    skip_writing = false
-                    await ExerciseClasses[id].fill_default(elem)
-                }
-            } else {
-                alert('不支持的题型！')
-                return
-            }
-        }
-        if (skip_writing && writingBlocks.length > 0) { // 如果只有写作题那就直接提交答案
-            for (const block of writingBlocks) {
-                const exercise = new WritingExercise(block)
-                await exercise.fill()
-            }
-            await submit()
-            return
-        }
-        if (!window.auto_fill) {
-            return
-        }
-        const old_uri = window.location.href
-        await submit()
-        while (await is_submit_page()) {
-            await sleep(500)
-        }
-        await sleep(1000) //慢一点
-        const new_uri = window.location.href
-        if (old_uri !== new_uri) return
+async function fakeSubmit() {  // 虚假提交，返回false表示该次尝试终止，true表示可以继续
+    let skip_writing = true
+    const writingBlocks = []
+    let elems2 = document.querySelectorAll("lib-adap-group-exercise-cs-study")
+    if (elems2.length === 0) {
+        elems2 = document.querySelectorAll('lib-adap-exercise-cs-study')
     }
+    for (const elem of elems2) {
+        const promises = ExerciseClasses.map(exercise => exercise.is_this_exercise(elem))
+        const results = await Promise.all(promises)
+        if (results.some(Boolean)) {
+            const id = results.findIndex(Boolean)
+            if (ExerciseClasses[id] === WritingExercise) {
+                writingBlocks.push(elem)
+                continue
+            } else {
+                skip_writing = false
+                await ExerciseClasses[id].fill_default(elem)
+            }
+        } else {
+            alert('不支持的题型！')
+            return false
+        }
+    }
+    if (skip_writing && writingBlocks.length > 0) { // 如果只有写作题那就直接提交答案
+        for (const block of writingBlocks) {
+            const exercise = new WritingExercise(block)
+            await exercise.fill()
+        }
+        await submit()
+        return false
+    }
+    const old_uri = window.location.href
+    await submit()
+    while (await is_submit_page()) {
+        await sleep(500)
+    }
+    await sleep(1000) //慢一点
+    const new_uri = window.location.href
+    if (old_uri !== new_uri) return false
+    return true
+}
 
-    console.log('get answer go')
-
-    if (await answer_is_correct()) return
-
-    console.log('get answer go')
-
-    //获取答案
+async function getAnswer() {  // 获得答案并填充
     let elems = document.querySelectorAll("lib-adap-group-exercise-cs-stu-info,lib-adap-group-exercise-cs-study")
     if (elems.length === 0) {
         elems = document.querySelectorAll('lib-adap-exercise-cs-stu-info,lib-adap-exercise-cs-study')
@@ -100,29 +89,51 @@ async function button_activate() {
         }
         if (t) {
             alert('不支持的题型！')
-            return
+            return null
         }
     }
 
     const exercises = await Promise.all(exerPromises)
     if (exerPromises.some(exer => exer === null)) {
         alert('不支持的题型！')
-        return
+        return null
     }
 
     console.log(exercises)
+    return exercises
+}
 
-    await retry()
+async function fillAnswer(exercises) {
     //获取新元素
     let elems2 = document.querySelectorAll("lib-adap-group-exercise-cs-study")
     if (elems2.length === 0) {
         elems2 = document.querySelectorAll('lib-adap-exercise-cs-study')
     }
+    
+    console.log(elems2)
 
     let id = 0
     for (const exercise of exercises) {
         exercise.element = elems2[id++]
+        console.log(exercise.element)
         await exercise.fill()
+    }
+}
+
+async function button_activate() {
+    console.log(window.auto_fill)
+    if (await is_submit_page()) {
+        const res = await fakeSubmit()
+        if (!res || !window.auto_fill || await answer_is_correct()) return
+        const exercises = await getAnswer()
+        if (exercises === null) return
+        await retry()
+        fillAnswer(exercises)
+    } else {
+        const exercises = await getAnswer()
+        if (exercises === null) return
+        await retry()
+        fillAnswer(exercises)
     }
 }
 

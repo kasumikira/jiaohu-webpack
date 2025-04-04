@@ -23,13 +23,15 @@ export default class MultipleChoiceExercise extends Exercise {
     }
 
     static async fill_box(s, content = null) {
+        const options = s.querySelectorAll(".lib-single-item-one")
         if (content === null) {
             const isAlreadyAnswered = Array.from(s.querySelectorAll('.lib-single-item-img')).some(img_div => !img_div.querySelector('img').src.includes('no-choice'));
             if (!isAlreadyAnswered) {
-                s.querySelector(".lib-single-item-one").click();
+                const id = Math.floor(options.length * Math.random())
+                options[id].click()
             }
         } else {
-            for (const item of s.querySelectorAll(".lib-single-item-one")) {
+            for (const item of options) {
                 for (const conten of content) {
                     const id = item.querySelector(".lib-single-item-order").textContent;
                     if (id === conten + '.') {

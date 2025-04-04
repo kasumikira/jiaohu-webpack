@@ -1,3 +1,4 @@
+import { RANDOM_RATIO, RECORD_TIME } from '../config'
 import Exercise from './Exercise'
 import { sleep } from './utils'
 
@@ -20,6 +21,7 @@ export default class AudioExercise extends Exercise {
     static async fill_box(s, content = '') {  // 这里的content是一个空字符串，因为音频题目不需要填充
         let t = setInterval(() => {
             if (this.lock !== true) {
+                const recordTime = RECORD_TIME * (1 + (Math.random() - 0.5) * 2 * RANDOM_RATIO)
                 clearInterval(t)
                 this.lock = true
                 const btn = s.querySelector('img')
@@ -28,7 +30,7 @@ export default class AudioExercise extends Exercise {
                     const btn2 = s.querySelector('img')
                     btn2.click()
                     console.log('go')
-                }, 2000)
+                }, recordTime)
             }
         }, 500)
         await sleep(500)

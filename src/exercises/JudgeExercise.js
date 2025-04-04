@@ -25,7 +25,8 @@ export default class JudgeExercise extends Exercise {
             // 检查是否已经有答案
             const isAlreadyAnswered = Array.from(radios).some(radio => radio.querySelector('img').hidden === false)
             if (!isAlreadyAnswered) {
-                radios[0].click()
+                const id = Math.floor(radios.length * Math.random())
+                radios[id].click()
             }
         } else {
             radios[content].click()

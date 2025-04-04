@@ -27,6 +27,10 @@
         <input type="password" v-model="api">
       </label>
     </div>
+
+    <div class="config-item" v-show="aiWorking">
+      AI正在生成数据......
+    </div>
   </div>
 </template>
 
@@ -42,7 +46,9 @@ export default {
     const autoSubmit = ref(false)
     const autoFill = ref(false)
     const api = ref(window.DEEPSEEK_KEY)
-
+    const aiWorking = ref(false)
+    window.isAI = ref(false)
+    
     // 从 localStorage 加载保存的设置
     const loadFromStorage = () => {
       if (localStorage.getItem('async_input') !== null) {
@@ -84,6 +90,10 @@ export default {
       localStorage.setItem('api', value)
     })
 
+    watch(window.isAI, (value) => {
+      aiWorking.value = value
+    })
+
     // 初始加载保存的设置
     loadFromStorage()
 
@@ -91,7 +101,8 @@ export default {
       asyncInput,
       autoSubmit,
       autoFill,
-      api
+      api,
+      aiWorking
     }
   }
 }

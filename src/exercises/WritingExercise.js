@@ -35,16 +35,17 @@ export default class WritingExercise extends Exercise {
             await fill_textbox(s,'a')
         } else {
             try {
+                window.isAI.value = true
                 const completion = await creativeAnswerGenerator(question)
                 for await (const chunk of completion) {
                     if (chunk.choices[0].delta.content) {
                         await fill_textbox(s, chunk.choices[0].delta.content)
                     }
                 }
-                return true
             } catch (error) {
                 console.error('Error generating answer:', error)
-                return false
+            } finally {
+                window.isAI.value = false
             }
         }
     }
