@@ -1,4 +1,4 @@
-import { WAIT_AFTER_FILL } from '../config'
+import { CHOOSE_RATE, WAIT_AFTER_FILL } from '../config'
 import Exercise from './Exercise'
 import { sleep } from '../utils'
 
@@ -27,8 +27,18 @@ export default class MultipleChoiceExercise extends Exercise {
         if (content === null) {
             const isAlreadyAnswered = Array.from(s.querySelectorAll('.lib-single-item-img')).some(img_div => !img_div.querySelector('img').src.includes('no-choice'));
             if (!isAlreadyAnswered) {
-                const id = Math.floor(options.length * Math.random())
-                options[id].click()
+                let cnt = 0
+                for (const option of options) {
+                    if (Math.random <= CHOOSE_RATE) {
+                        option.click()
+                        cnt++
+                        await sleep(WAIT_AFTER_FILL) // 模拟同步输入时的卡顿
+                    }
+                }
+                if (cnt <= 0) { // 运气很差，一次也没选中
+                    const id = Math.floor(options.length * Math.random())
+                    options[id].click()
+                }
             }
         } else {
             for (const item of options) {

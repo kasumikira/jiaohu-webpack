@@ -1,8 +1,9 @@
 import { ExerciseClasses, WritingExercise } from './exercises';
-import { sleep } from './utils.js';
+import { sleep } from './utils';
 // import { initMicHook } from './hook/hook.js';
 import { createApp } from 'vue';
 import ConfigPanel from './components/ConfigPanel.vue';
+import { WAIT_AFTER_COMPLETE } from './config';
 
 async function answer_is_correct() {  // 判断答案是否正确
     const marks = document.querySelectorAll('img')
@@ -128,12 +129,16 @@ async function button_activate() {
         const exercises = await getAnswer()
         if (exercises === null) return
         await retry()
-        fillAnswer(exercises)
+        await fillAnswer(exercises)
+        await sleep(WAIT_AFTER_COMPLETE)
+        if (window.auto_submit) submit()
     } else {
         const exercises = await getAnswer()
         if (exercises === null) return
         await retry()
-        fillAnswer(exercises)
+        await fillAnswer(exercises)
+        await sleep(WAIT_AFTER_COMPLETE)
+        if (window.auto_submit) submit()
     }
 }
 
