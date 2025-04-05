@@ -121,24 +121,99 @@ async function fillAnswer(exercises) {
     }
 }
 
+function showErrorDialog(error) {
+  const dialog = document.createElement('div');
+  dialog.style = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 24px;
+    width: 400px;
+    max-width: 90%;
+    max-height: 80vh;
+    z-index: 10000;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  `;
+  
+  dialog.innerHTML = `
+    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="margin-right: 12px;">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="#ff4d4f"/>
+      </svg>
+      <h3 style="margin: 0; color: #ff4d4f; font-size: 18px; font-weight: 500;">操作失败</h3>
+    </div>
+    
+    <div style="color: #595959; margin-bottom: 20px; line-height: 1.5;">
+      ${error.message || '发生未知错误'}
+    </div>
+    
+    <details style="margin-bottom: 20px;">
+      <summary style="color: #1890ff; cursor: pointer; outline: none;">查看技术详情</summary>
+      <pre style="
+        background: #f5f5f5; 
+        padding: 12px;
+        border-radius: 6px;
+        overflow: auto;
+        max-height: 200px;
+        font-size: 13px;
+        margin-top: 8px;
+        white-space: pre-wrap;
+        color: #595959;
+      ">${error.stack || '无调用栈信息'}</pre>
+    </details>
+    
+    <div style="display: flex; justify-content: flex-end;">
+      <button onclick="this.parentNode.parentNode.remove()" style="
+        background: #1890ff;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.3s;
+      " onmouseover="this.style.background='#40a9ff'" 
+      onmouseout="this.style.background='#1890ff'">
+        我明白了
+      </button>
+    </div>
+  `;
+  
+  document.body.appendChild(dialog);
+}
+
 async function button_activate() {
-    console.log(window.auto_fill)
-    if (await is_submit_page()) {
-        const res = await fakeSubmit()
-        if (!res || !window.auto_fill || await answer_is_correct()) return
-        const exercises = await getAnswer()
-        if (exercises === null) return
-        await retry()
-        await fillAnswer(exercises)
-        await sleep(WAIT_AFTER_COMPLETE)
-        if (window.auto_submit) submit()
-    } else {
-        const exercises = await getAnswer()
-        if (exercises === null) return
-        await retry()
-        await fillAnswer(exercises)
-        await sleep(WAIT_AFTER_COMPLETE)
-        if (window.auto_submit) submit()
+    try {
+        console.log(window.auto_fill)
+        if (await is_submit_page()) {
+            const res = await fakeSubmit()
+            if (!res || !window.auto_fill || await answer_is_correct()) return
+            const exercises = await getAnswer()
+            if (exercises === null) return
+            await retry()
+            await fillAnswer(exercises)
+            await sleep(WAIT_AFTER_COMPLETE)
+            if (window.auto_submit) submit()
+        } else {
+            const exercises = await getAnswer()
+            if (exercises === null) return
+            await retry()
+            await fillAnswer(exercises)
+            await sleep(WAIT_AFTER_COMPLETE)
+            if (window.auto_submit) submit()
+        }
+    } catch (error) {
+        console.error('操作失败:', error);
+        showErrorDialog(error);
+        throw error;
     }
 }
 

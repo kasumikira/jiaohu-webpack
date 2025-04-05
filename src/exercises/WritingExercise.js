@@ -31,26 +31,34 @@ export default class WritingExercise extends Exercise {
     }
 
     static async fill_box(s, question) {
+        if (!s || typeof s !== 'object') {
+            throw new Error('Invalid textarea element')
+        }
+
         if (s.value !== undefined && s.value !== '' || s.textContent !== '') {
             return
         }
 
         if (!question) {
-            await fill_textbox(s,'a')
-        } else {
-            try {
-                window.isAI.value = true
-                const completion = await creativeAnswerGenerator(question)
-                for await (const chunk of completion) {
-                    if (chunk.choices[0].delta.content) {
-                        await fill_textbox(s, chunk.choices[0].delta.content)
-                    }
-                }
-            } catch (error) {
-                console.error('Error generating answer:', error)
-            } finally {
-                window.isAI.value = false
+            await fill_textbox(s, 'a')
+            return
+        }
+
+        window.isAI.value = true
+        try {
+            const completion = await creativeAnswerGenerator(question)
+            if (!completion) {
+                throw new Error('Failed to generate answer')
             }
+
+            for await (const chunk of completion) {
+                if (!chunk?.choices?.[0]?.delta?.content) {
+                    continue
+                }
+                await fill_textbox(s, chunk.choices[0].delta.content)
+            }
+        } finally {
+            window.isAI.value = false
         }
     }
 }

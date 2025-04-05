@@ -29,7 +29,7 @@ export default class MultipleChoiceExercise extends Exercise {
             if (!isAlreadyAnswered) {
                 let cnt = 0
                 for (const option of options) {
-                    if (Math.random <= CHOOSE_RATE) {
+                    if (Math.random() <= CHOOSE_RATE) {
                         option.click()
                         cnt++
                         await sleep(WAIT_AFTER_FILL) // 模拟同步输入时的卡顿
